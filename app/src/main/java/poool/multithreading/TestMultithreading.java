@@ -1,15 +1,15 @@
-package poool.sequential;
+package poool.multithreading;
 
 import java.util.Random;
 
-import poool.sequential.model.board.Board;
-import poool.sequential.model.board.LargeBoardConfiguration;
-import poool.sequential.model.board.MassiveBoardConfiguration;
-import poool.sequential.view.View;
-import poool.sequential.view.ViewModel;
+import poool.multithreading.model.board.Board;
+import poool.multithreading.model.board.LargeBoardConfiguration;
+import poool.multithreading.model.board.MassiveBoardConfiguration;
+import poool.multithreading.view.View;
+import poool.multithreading.view.ViewModel;
 import poool.utils.Vector2D;
 
-public class TestSequential {
+public class TestMultithreading {
 
     public static void main(String[] args) {
         final Random rand = new Random(42);
