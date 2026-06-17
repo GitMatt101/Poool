@@ -12,7 +12,7 @@ public class LargeBoardConfiguration implements BoardConfiguration {
 
     @Override
 	public Ball getPlayerBall() {
-		return new Ball(new Point2D(0, -0.75), new Vector2D(0, 1), 0.05, 1.5);
+		return new Ball(new Point2D(0, -0.75), new Vector2D(0, 2.5), 0.05, 1.5);
 	}
 
     @Override

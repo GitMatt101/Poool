@@ -5,14 +5,15 @@ import java.util.Random;
 import poool.model.Vector2D;
 import poool.view.View;
 import poool.view.ViewModel;
-import poool.model.board.MassiveBoardConfiguration;
+import poool.model.board.LargeBoardConfiguration;
 
 public class TestMultithreading {
 
     public static void main(String[] args) {
         final Random rand = new Random(42);
 
-        MultithreadedBoard board = new MultithreadedBoard(new MassiveBoardConfiguration());
+        MultithreadedBoard board = new MultithreadedBoard(new LargeBoardConfiguration());
+        board.init();
 
         ViewModel viewModel = new ViewModel();
         View view = new View(viewModel, 1200, 800);
@@ -41,10 +42,7 @@ public class TestMultithreading {
 
             long elapsed = System.currentTimeMillis() - lastUpdateTime;
             lastUpdateTime = System.currentTimeMillis();
-            long start = System.currentTimeMillis();
             board.updateState(elapsed);
-            long end = System.currentTimeMillis();
-            System.out.println("Update time (" + board.getAllBalls().size() + " balls): " + (end - start) + "ms");
 
             nFrames++;
             int framePerSec = 0;
