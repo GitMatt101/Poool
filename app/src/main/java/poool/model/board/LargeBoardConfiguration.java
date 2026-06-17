@@ -1,12 +1,12 @@
-package poool.sequential.model.board;
+package poool.model.board;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import poool.sequential.model.Ball;
-import poool.utils.Boundary;
-import poool.utils.Point2D;
-import poool.utils.Vector2D;
+import poool.model.Boundary;
+import poool.model.Point2D;
+import poool.model.Vector2D;
+import poool.model.Ball;
 
 public class LargeBoardConfiguration implements BoardConfiguration {
 

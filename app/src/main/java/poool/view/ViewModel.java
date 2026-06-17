@@ -1,9 +1,9 @@
-package poool.sequential.view;
+package poool.view;
 
 import java.util.ArrayList;
 
-import poool.sequential.model.board.Board;
-import poool.utils.Point2D;
+import poool.model.Point2D;
+import poool.model.board.Board;
 
 record BallViewInfo(Point2D pos, double radius) {
 }
@@ -21,12 +21,10 @@ public class ViewModel {
 
 	public synchronized void update(Board board, int framePerSec) {
 		balls.clear();
-		for (var b : board.getBalls()) {
+		for (var b : board.getAllBalls()) {
 			balls.add(new BallViewInfo(b.getPosition(), b.getRadius()));
 		}
 		this.framePerSec = framePerSec;
-		var p = board.getPlayerBall();
-		player = new BallViewInfo(p.getPosition(), p.getRadius());
 	}
 
 	public synchronized ArrayList<BallViewInfo> getBalls() {

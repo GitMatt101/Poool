@@ -1,4 +1,6 @@
-package poool.utils;
+package poool.model;
+
+import java.util.Objects;
 
 public class Point2D {
     
@@ -30,6 +32,22 @@ public class Point2D {
     @Override
     public String toString() {
         return "(" + this.x + ", " + this.y + ")";
+    }
+
+    @Override
+    public boolean equals(final Object obj) {
+        if (obj == this) {
+            return true;
+        }
+        if (!(obj instanceof Point2D pos)) {
+            return false;
+        }
+        return this.x == pos.getX() && this.y == pos.getY();
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(this.x, this.y);
     }
 
 }

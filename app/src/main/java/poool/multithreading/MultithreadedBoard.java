@@ -1,44 +1,20 @@
-package poool.multithreading.model.board;
+package poool.multithreading;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import poool.multithreading.model.Ball;
-import poool.utils.Boundary;
+import poool.model.board.BasicBoard;
+import poool.model.board.BoardConfiguration;
+import poool.model.Ball;
 import poool.utils.Globals;
 
-public class Board {
+public class MultithreadedBoard extends BasicBoard {
 
-    private final Ball player;
-    private final Ball opponent;
-    private final List<Ball> balls;
-    private static Boundary bounds;
-
-    public Board(final BoardConfiguration configuration) {
-        this.player = configuration.getPlayerBall();
-        this.opponent = configuration.getOpponentBall();
-        this.balls = configuration.getBalls();
-        this.balls.add(this.player);
-        //this.balls.add(this.opponent);
-        bounds = configuration.getBounds();
+    public MultithreadedBoard(final BoardConfiguration configuration) {
+        super(configuration);
     }
 
-    public Ball getPlayerBall() {
-        return this.player;
-    }
-
-    public Ball getOpponentBall() {
-        return this.opponent;
-    }
-
-    public List<Ball> getBalls() {
-        return this.balls;
-    }
-
-    public static Boundary getBounds() {
-        return bounds;
-    }
-
+    @Override
     public void updateState(final double deltaTime) {
         this.updatePositions(deltaTime);
         this.checkAllCollisions();
@@ -46,9 +22,9 @@ public class Board {
 
     @SuppressWarnings("unchecked")
     private void checkAllCollisions() {
-        final double length = Board.getBounds().x1() - Board.getBounds().x0();
+        final double length = this.bounds.x1() - this.bounds.x0();
         final double xStep = length / Globals.GRID_COLS;
-        final double height = Board.getBounds().y1() - Board.getBounds().y0();
+        final double height = this.bounds.y1() - this.bounds.y0();
         final double yStep = height / Globals.GRID_ROWS;
 
         List<Ball>[][] grid = new ArrayList[Globals.GRID_ROWS][Globals.GRID_COLS];
@@ -59,8 +35,8 @@ public class Board {
         }
 
         for (final Ball b : this.balls) {
-            int col = (int) ((b.getPosition().getX() - Board.getBounds().x0()) / xStep);
-            int row = (int) ((b.getPosition().getY() - Board.getBounds().y0()) / yStep);
+            int col = (int) ((b.getPosition().getX() - this.bounds.x0()) / xStep);
+            int row = (int) ((b.getPosition().getY() - this.bounds.y0()) / yStep);
 
             col = Math.max(0, Math.min(col, Globals.GRID_COLS - 1));
             row = Math.max(0, Math.min(row, Globals.GRID_ROWS - 1));
@@ -85,9 +61,9 @@ public class Board {
     }
 
     private void updatePositions(final double deltaTime) {
-        this.player.updateState(deltaTime);
-        this.opponent.updateState(deltaTime);
-        this.balls.forEach(b -> b.updateState(deltaTime));
+        this.player.updateState(deltaTime, this.getBounds());
+        this.opponent.updateState(deltaTime, this.getBounds());
+        this.balls.forEach(b -> b.updateState(deltaTime, this.getBounds()));
     }
 
     private void checkCollision(final Ball a, final Ball b) {

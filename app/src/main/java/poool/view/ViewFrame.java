@@ -1,4 +1,4 @@
-package poool.sequential.view;
+package poool.view;
 
 import java.awt.BasicStroke;
 import java.awt.Color;

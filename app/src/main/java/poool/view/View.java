@@ -1,4 +1,4 @@
-package poool.multithreading.view;
+package poool.view;
 
 public class View {
 

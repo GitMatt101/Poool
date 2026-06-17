@@ -2,19 +2,17 @@ package poool.multithreading;
 
 import java.util.Random;
 
-import poool.multithreading.model.board.Board;
-import poool.multithreading.model.board.LargeBoardConfiguration;
-import poool.multithreading.model.board.MassiveBoardConfiguration;
-import poool.multithreading.view.View;
-import poool.multithreading.view.ViewModel;
-import poool.utils.Vector2D;
+import poool.model.Vector2D;
+import poool.view.View;
+import poool.view.ViewModel;
+import poool.model.board.MassiveBoardConfiguration;
 
 public class TestMultithreading {
 
     public static void main(String[] args) {
         final Random rand = new Random(42);
 
-        Board board = new Board(new MassiveBoardConfiguration());
+        MultithreadedBoard board = new MultithreadedBoard(new MassiveBoardConfiguration());
 
         ViewModel viewModel = new ViewModel();
         View view = new View(viewModel, 1200, 800);
@@ -29,7 +27,7 @@ public class TestMultithreading {
         long t0 = System.currentTimeMillis();
         long lastUpdateTime = System.currentTimeMillis();
 
-        var pb = board.getPlayerBall();
+        var pb = board.getPlayer();
         var lastKickTime = t0;
 
         while (true) {
@@ -46,7 +44,7 @@ public class TestMultithreading {
             long start = System.currentTimeMillis();
             board.updateState(elapsed);
             long end = System.currentTimeMillis();
-            System.out.println("Update time (" + board.getBalls().size() + " balls): " + (end - start) + "ms");
+            System.out.println("Update time (" + board.getAllBalls().size() + " balls): " + (end - start) + "ms");
 
             nFrames++;
             int framePerSec = 0;

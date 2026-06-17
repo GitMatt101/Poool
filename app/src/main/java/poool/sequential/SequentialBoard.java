@@ -1,41 +1,17 @@
-package poool.sequential.model.board;
+package poool.sequential;
 
-import java.util.List;
-
-import poool.sequential.model.Ball;
-import poool.utils.Boundary;
+import poool.model.board.BasicBoard;
+import poool.model.board.BoardConfiguration;
+import poool.model.Ball;
 import poool.utils.Globals;
 
-public class Board {
+public class SequentialBoard extends BasicBoard {
 
-    private final Ball player;
-    private final Ball opponent;
-    private final List<Ball> balls;
-    private static Boundary bounds;
-
-    public Board(final BoardConfiguration configuration) {
-        this.player = configuration.getPlayerBall();
-        this.opponent = configuration.getOpponentBall();
-        this.balls = configuration.getBalls();
-        bounds = configuration.getBounds();
+    public SequentialBoard(final BoardConfiguration configuration) {
+        super(configuration);
     }
 
-    public Ball getPlayerBall() {
-        return this.player;
-    }
-
-    public Ball getOpponentBall() {
-        return this.opponent;
-    }
-
-    public List<Ball> getBalls() {
-        return this.balls;
-    }
-
-    public static Boundary getBounds() {
-        return bounds;
-    }
-
+    @Override
     public void updateState(final double deltaTime) {
         this.updatePositions(deltaTime);
         for (final Ball ball : this.balls) {
@@ -50,9 +26,9 @@ public class Board {
     }
 
     private void updatePositions(final double deltaTime) {
-        this.player.updateState(deltaTime);
-        this.opponent.updateState(deltaTime);
-        this.balls.forEach(b -> b.updateState(deltaTime));
+        this.player.updateState(deltaTime, this.getBounds());
+        this.opponent.updateState(deltaTime, this.getBounds());
+        this.balls.forEach(b -> b.updateState(deltaTime, this.getBounds()));
     }
 
     private void checkCollision(final Ball a, final Ball b) {

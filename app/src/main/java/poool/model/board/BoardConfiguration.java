@@ -1,9 +1,9 @@
-package poool.multithreading.model.board;
+package poool.model.board;
 
 import java.util.List;
 
-import poool.multithreading.model.Ball;
-import poool.utils.Boundary;
+import poool.model.Boundary;
+import poool.model.Ball;
 
 public interface BoardConfiguration {
 

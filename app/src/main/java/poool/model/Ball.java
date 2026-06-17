@@ -1,10 +1,6 @@
-package poool.multithreading.model;
+package poool.model;
 
-import poool.multithreading.model.board.Board;
-import poool.utils.Boundary;
 import poool.utils.Globals;
-import poool.utils.Point2D;
-import poool.utils.Vector2D;
 
 public class Ball {
 
@@ -48,7 +44,7 @@ public class Ball {
         return this.mass;
     }
 
-    public void updateState(final double deltaTime) {
+    public void updateState(final double deltaTime, final Boundary bounds) {
         final double speed = this.velocity.getAbsolute();
         if (speed > Globals.MIN_VELOCITY) {
             final double deltaTimeScaled = deltaTime * Globals.MIN_VELOCITY;
@@ -58,24 +54,22 @@ public class Ball {
             final Vector2D velocityScaled = new Vector2D(this.velocity.getX(), this.velocity.getY());
             velocityScaled.mul(deltaTimeScaled);
             this.position.sum(velocityScaled);
-            this.applyBoundaryConstraints();
+            this.applyBoundaryConstraints(bounds);
         } else {
             // Reset velocity to (0,0)
             this.velocity.mul(0);
         }
     }
 
-    private void applyBoundaryConstraints() {
-        final Boundary bounds = Board.getBounds();
-        if (this.position.getX() + radius >= bounds.x1()) {
+    private void applyBoundaryConstraints(final Boundary bounds) {
+        if (this.position.getX() + radius >= bounds.x1())
             this.velocity.invertX();
-        } else if (this.position.getX() - radius <= bounds.x0()) {
+        else if (this.position.getX() - radius <= bounds.x0())
             this.velocity.invertX();
-        } else if (this.position.getY() + radius >= bounds.y1()) {
+        else if (this.position.getY() + radius >= bounds.y1())
             this.velocity.invertY();
-        } else if (this.position.getY() - radius <= bounds.y0()) {
+        else if (this.position.getY() - radius <= bounds.y0())
             this.velocity.invertY();
-        }
     }
     
 }

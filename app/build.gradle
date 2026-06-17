@@ -5,10 +5,10 @@
  * For more details on building Java & JVM projects, please refer to https://docs.gradle.org/9.2.0/userguide/building_java_projects.html in the Gradle documentation.
  */
 
-plugins {
-    // Apply the application plugin to add support for building a CLI application in Java.
-    id 'application'
-}
+// plugins {
+//     // Apply the application plugin to add support for building a CLI application in Java.
+//     id 'application'
+// }
 
 repositories {
     // Use Maven Central for resolving dependencies.
@@ -32,10 +32,10 @@ java {
     }
 }
 
-application {
-    // Define the main class for the application.
-    mainClass = 'poool.App'
-}
+// application {
+//     // Define the main class for the application.
+//     mainClass = 'poool.App'
+// }
 
 tasks.named('test') {
     // Use JUnit Platform for unit tests.

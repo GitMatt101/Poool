@@ -2,19 +2,17 @@ package poool.sequential;
 
 import java.util.Random;
 
-import poool.sequential.model.board.Board;
-import poool.sequential.model.board.LargeBoardConfiguration;
-import poool.sequential.model.board.MassiveBoardConfiguration;
-import poool.sequential.view.View;
-import poool.sequential.view.ViewModel;
-import poool.utils.Vector2D;
+import poool.model.Vector2D;
+import poool.view.View;
+import poool.view.ViewModel;
+import poool.model.board.MassiveBoardConfiguration;
 
 public class TestSequential {
 
     public static void main(String[] args) {
         final Random rand = new Random(42);
 
-        Board board = new Board(new MassiveBoardConfiguration());
+        SequentialBoard board = new SequentialBoard(new MassiveBoardConfiguration());
 
         ViewModel viewModel = new ViewModel();
         View view = new View(viewModel, 1200, 800);
@@ -29,7 +27,7 @@ public class TestSequential {
         long t0 = System.currentTimeMillis();
         long lastUpdateTime = System.currentTimeMillis();
 
-        var pb = board.getPlayerBall();
+        var pb = board.getPlayer();
         var lastKickTime = t0;
 
         while (true) {
@@ -46,7 +44,7 @@ public class TestSequential {
             long start = System.currentTimeMillis();
             board.updateState(elapsed);
             long end = System.currentTimeMillis();
-            System.out.println("Update time (" + board.getBalls().size() + " balls): " + (end - start) + "ms");
+            System.out.println("Update time (" + board.getAllBalls().size() + " balls): " + (end - start) + "ms");
 
             nFrames++;
             int framePerSec = 0;
