@@ -34,7 +34,7 @@ public class TestSequential {
             if (pb.getVelocity().getAbsolute() < 0.05 && System.currentTimeMillis() - lastKickTime > 2000) {
                 var angle = rand.nextDouble() * Math.PI * 0.25;
                 var v = new Vector2D(Math.cos(angle), Math.sin(angle));
-                v.mul(5.0);
+                v.mul(1.0);
                 pb.setVelocity(v.getX(), v.getY());
                 lastKickTime = System.currentTimeMillis();
             }

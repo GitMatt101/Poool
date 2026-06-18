@@ -62,13 +62,13 @@ public class Ball {
     }
 
     private void applyBoundaryConstraints(final Boundary bounds) {
-        if (this.position.getX() + radius >= bounds.x1())
+        if (this.position.getX() + radius >= bounds.x1() && this.velocity.getX() > 0)
             this.velocity.invertX();
-        else if (this.position.getX() - radius <= bounds.x0())
+        else if (this.position.getX() - radius <= bounds.x0() && this.velocity.getX() < 0)
             this.velocity.invertX();
-        else if (this.position.getY() + radius >= bounds.y1())
+        else if (this.position.getY() + radius >= bounds.y1() && this.velocity.getY() > 0)
             this.velocity.invertY();
-        else if (this.position.getY() - radius <= bounds.y0())
+        else if (this.position.getY() - radius <= bounds.y0() && this.velocity.getY() < 0)
             this.velocity.invertY();
     }
     

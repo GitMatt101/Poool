@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import poool.model.Ball;
-import poool.model.Boundary;
 import poool.model.board.BasicBoard;
 import poool.model.board.BoardConfiguration;
 import poool.utils.Globals;
@@ -30,7 +29,8 @@ public class MultithreadedBoard extends BasicBoard {
         while (this.finishedJobs < this.workers.size()) {
             try {
                 wait();
-            } catch (InterruptedException e) {}
+            } catch (InterruptedException e) {
+            }
         }
         return this.balls;
     }
@@ -61,36 +61,32 @@ public class MultithreadedBoard extends BasicBoard {
     }
 
     private void checkCollisions() {
-        final List<Boundary> cells = new ArrayList<>();
         final double xStep = (this.bounds.x1() - this.bounds.x0()) / Globals.GRID_COLS;
         final double yStep = (this.bounds.y1() - this.bounds.y0()) / Globals.GRID_ROWS;
 
-        for (int i = 0; i < Globals.GRID_ROWS; i++) {
-            for (int j = 0; j < Globals.GRID_COLS; j++) {
-                double x0 = this.bounds.x0() + (j * xStep);
-                double y0 = this.bounds.y0() + (i * yStep);
-                double x1 = this.bounds.x0() + ((j + 1) * xStep);
-                double y1 = this.bounds.y0() + ((i + 1) * yStep);
-                cells.add(new Boundary(x0, y0, x1, y1));
-            }
+        int totalCells = Globals.GRID_ROWS * Globals.GRID_COLS;
+        List<List<Ball>> workersBalls = new ArrayList<>(totalCells);
+        for (int i = 0; i < totalCells; i++)
+            workersBalls.add(new ArrayList<>());
+
+        for (final Ball b : this.balls) {
+            int col = (int) ((b.getPosition().getX() - this.bounds.x0()) / xStep);
+            int row = (int) ((b.getPosition().getY() - this.bounds.y0()) / yStep);
+            col = Math.max(0, Math.min(col, Globals.GRID_COLS - 1));
+            row = Math.max(0, Math.min(row, Globals.GRID_ROWS - 1));
+            int cellIndex = row * Globals.GRID_COLS + col;
+            workersBalls.get(cellIndex).add(b);
+            if (b.getPosition().getX() + b.getRadius() > this.bounds.x0() + (col + 1) * xStep && col < Globals.GRID_COLS - 1)
+                workersBalls.get(cellIndex + 1).add(b);
+            if (b.getPosition().getY() + b.getRadius() > this.bounds.y0() + (row + 1) * yStep && row < Globals.GRID_ROWS - 1)
+                workersBalls.get(cellIndex + Globals.GRID_COLS).add(b);
         }
 
-        if (this.workers.size() != cells.size())
-            throw new UnsupportedOperationException();
-
-        for (int i = 0; i < cells.size(); i++) {
-            final Boundary cell = cells.get(i);
-            final Worker worker = this.workers.get(i);
-            worker.setBalls(this.filter(cell));
+        for (int i = 0; i < this.workers.size(); i++) {
+            Worker worker = this.workers.get(i);
+            worker.setBalls(workersBalls.get(i));
             worker.startWorking();
         }
-    }
-
-    private List<Ball> filter(final Boundary boundary) {
-        return this.balls.stream()
-                .filter(b -> b.getPosition().getX() >= boundary.x0() && b.getPosition().getX() <= boundary.x1())
-                .filter(b -> b.getPosition().getY() >= boundary.y0() && b.getPosition().getY() <= boundary.y1())
-                .toList();
     }
 
 }

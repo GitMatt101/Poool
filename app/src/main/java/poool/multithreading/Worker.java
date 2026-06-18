@@ -36,9 +36,15 @@ public class Worker extends Thread {
                     } catch (InterruptedException e) {}
                 }
             }
-            for (int i = 0; i < this.balls.size() - 1; i++) {
-                for (int j = i + 1; j < this.balls.size(); j++) {
-                    this.checkCollision(this.balls.get(i), this.balls.get(j));
+            if (this.balls.stream().anyMatch(b -> b.getVelocity().getAbsolute() > Globals.MIN_VELOCITY)) {
+                for (int i = 0; i < this.balls.size() - 1; i++) {
+                    for (int j = i + 1; j < this.balls.size(); j++) {
+                        final Ball a = this.balls.get(i);
+                        final Ball b = this.balls.get(j);
+                        if (a.getVelocity().getAbsolute() > Globals.MIN_VELOCITY || b.getVelocity().getAbsolute() > Globals.MIN_VELOCITY) {
+                            this.checkCollision(this.balls.get(i), this.balls.get(j));
+                        }
+                    }
                 }
             }
             this.work = false;
@@ -63,10 +69,8 @@ public class Worker extends Thread {
             // if not already separating, update velocities
             if (dvn <= 0) {
                 final double imp = -(1 + Globals.RESTITUTION_COEFFICIENT) * dvn / (1.0 / a.getMass() + 1.0 / b.getMass());
-                a.setVelocity(a.getVelocity().getX() - (imp / a.getMass()) * nx,
-                        a.getVelocity().getY() - (imp / a.getMass()) * ny);
-                b.setVelocity(b.getVelocity().getX() + (imp / b.getMass()) * nx,
-                        b.getVelocity().getY() + (imp / b.getMass()) * ny);
+                a.setVelocity(a.getVelocity().getX() - (imp / a.getMass()) * nx, a.getVelocity().getY() - (imp / a.getMass()) * ny);
+                b.setVelocity(b.getVelocity().getX() + (imp / b.getMass()) * nx, b.getVelocity().getY() + (imp / b.getMass()) * ny);
             }
         }
     }

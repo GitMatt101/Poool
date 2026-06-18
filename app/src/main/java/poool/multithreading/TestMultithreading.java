@@ -5,14 +5,14 @@ import java.util.Random;
 import poool.model.Vector2D;
 import poool.view.View;
 import poool.view.ViewModel;
-import poool.model.board.LargeBoardConfiguration;
+import poool.model.board.MassiveBoardConfiguration;
 
 public class TestMultithreading {
 
     public static void main(String[] args) {
         final Random rand = new Random(42);
 
-        MultithreadedBoard board = new MultithreadedBoard(new LargeBoardConfiguration());
+        MultithreadedBoard board = new MultithreadedBoard(new MassiveBoardConfiguration());
         board.init();
 
         ViewModel viewModel = new ViewModel();
