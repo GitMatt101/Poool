@@ -1,4 +1,4 @@
-package poool.multithreading;
+package poool.model.multithreading;
 
 import java.util.ArrayList;
 import java.util.List;

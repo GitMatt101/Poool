@@ -1,4 +1,4 @@
-package poool.sequential;
+package poool.model.sequential;
 
 import poool.model.board.BasicBoard;
 import poool.model.board.BoardConfiguration;

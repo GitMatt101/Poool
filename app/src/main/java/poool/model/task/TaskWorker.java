@@ -1,4 +1,4 @@
-package poool.task;
+package poool.model.task;
 
 import java.util.List;
 import java.util.concurrent.Callable;

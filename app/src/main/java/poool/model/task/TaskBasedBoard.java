@@ -1,57 +1,29 @@
-package poool.multithreading;
+package poool.model.task;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
+import java.util.concurrent.Callable;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 import poool.model.Ball;
 import poool.model.board.BasicBoard;
 import poool.model.board.BoardConfiguration;
 import poool.utils.Globals;
 
-public class MultithreadedBoard extends BasicBoard {
+public class TaskBasedBoard extends BasicBoard {
 
-    private final List<Worker> workers = new ArrayList<>();
-    private int finishedJobs;
+    private final ExecutorService executor = Executors.newFixedThreadPool(Globals.MAX_THREADS);
 
-    public MultithreadedBoard(final BoardConfiguration configuration) {
+    public TaskBasedBoard(final BoardConfiguration configuration) {
         super(configuration);
     }
 
-    public void init() {
-        for (int i = 0; i < Globals.MAX_THREADS; i++)
-            this.workers.add(new Worker(this));
-        this.workers.forEach(Worker::start);
-        this.finishedJobs = this.workers.size();
-    }
-
     @Override
-    public synchronized List<Ball> getAllBalls() {
-        while (this.finishedJobs < this.workers.size()) {
-            try {
-                wait();
-            } catch (InterruptedException e) {
-            }
-        }
-        return this.balls;
-    }
-
-    public synchronized void signalJobDone() {
-        this.finishedJobs++;
-        if (finishedJobs == this.workers.size())
-            notifyAll();
-    }
-
-    @Override
-    public synchronized void updateState(final double deltaTime) {
+    public void updateState(final double deltaTime) {
         this.updatePositions(deltaTime);
         this.checkCollisions();
-        while (finishedJobs < this.workers.size()) {
-            try {
-                wait();
-            } catch (InterruptedException e) {
-            }
-        }
-        this.finishedJobs = 0;
     }
 
     private void updatePositions(final double deltaTime) {
@@ -82,11 +54,14 @@ public class MultithreadedBoard extends BasicBoard {
                 workersBalls.get(cellIndex + Globals.GRID_COLS).add(b);
         }
 
-        for (int i = 0; i < this.workers.size(); i++) {
-            Worker worker = this.workers.get(i);
-            worker.setBalls(workersBalls.get(i));
-            worker.startWorking();
+        final Collection<Callable<Void>> tasks = new ArrayList<>();
+        for (final List<Ball> cellBalls : workersBalls) {
+            tasks.add(new TaskWorker(cellBalls));
         }
-    }
 
+        try {
+            this.executor.invokeAll(tasks);
+        } catch (InterruptedException e) {}
+    }
+    
 }

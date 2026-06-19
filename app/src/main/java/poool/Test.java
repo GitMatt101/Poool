@@ -6,9 +6,9 @@ import poool.model.Vector2D;
 import poool.model.board.GameBoardConfiguration;
 import poool.model.board.LargeBoardConfiguration;
 import poool.model.board.MassiveBoardConfiguration;
-import poool.multithreading.MultithreadedBoard;
-import poool.sequential.SequentialBoard;
-import poool.task.TaskBasedBoard;
+import poool.model.multithreading.MultithreadedBoard;
+import poool.model.sequential.SequentialBoard;
+import poool.model.task.TaskBasedBoard;
 import poool.view.View;
 import poool.view.ViewModel;
 
