@@ -3,6 +3,7 @@ package poool;
 import java.util.Random;
 
 import poool.model.Vector2D;
+import poool.model.board.GameBoardConfiguration;
 import poool.model.board.LargeBoardConfiguration;
 import poool.model.board.MassiveBoardConfiguration;
 import poool.multithreading.MultithreadedBoard;
@@ -19,7 +20,7 @@ public class Test {
         // SequentialBoard board = new SequentialBoard(new MassiveBoardConfiguration());
         // MultithreadedBoard board = new MultithreadedBoard(new MassiveBoardConfiguration());
         // board.init();
-        TaskBasedBoard board = new TaskBasedBoard(new MassiveBoardConfiguration());
+        TaskBasedBoard board = new TaskBasedBoard(new GameBoardConfiguration());
 
         ViewModel viewModel = new ViewModel();
         View view = new View(viewModel, 1200, 800);
