@@ -4,7 +4,7 @@ import java.util.function.BiFunction;
 
 public class Globals {
 
-    public static int MAX_THREADS = Runtime.getRuntime().availableProcessors();
+    public static int MAX_THREADS = Runtime.getRuntime().availableProcessors() + 1;
 
     public static double MIN_VELOCITY = 0.001;
 

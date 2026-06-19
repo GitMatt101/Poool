@@ -23,6 +23,8 @@ public class CustomBoardConfiguration implements BoardConfiguration {
     public List<Ball> getBalls() {
         final List<Ball> balls = new ArrayList<>();
         balls.add(new Ball(new Point2D(0, 0), 0.01, 0.25));
+        balls.add(new Ball(new Point2D(0, 0.25), 0.01, 0.25));
+        balls.add(new Ball(new Point2D(0, 0.5), 0.01, 0.25));
         return balls;
     }
 

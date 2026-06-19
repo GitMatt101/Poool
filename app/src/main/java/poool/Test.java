@@ -1,19 +1,25 @@
-package poool.multithreading;
+package poool;
 
 import java.util.Random;
 
 import poool.model.Vector2D;
+import poool.model.board.LargeBoardConfiguration;
+import poool.model.board.MassiveBoardConfiguration;
+import poool.multithreading.MultithreadedBoard;
+import poool.sequential.SequentialBoard;
+import poool.task.TaskBasedBoard;
 import poool.view.View;
 import poool.view.ViewModel;
-import poool.model.board.MassiveBoardConfiguration;
 
-public class TestMultithreading {
+public class Test {
 
     public static void main(String[] args) {
         final Random rand = new Random(42);
 
-        MultithreadedBoard board = new MultithreadedBoard(new MassiveBoardConfiguration());
-        board.init();
+        // SequentialBoard board = new SequentialBoard(new MassiveBoardConfiguration());
+        // MultithreadedBoard board = new MultithreadedBoard(new MassiveBoardConfiguration());
+        // board.init();
+        TaskBasedBoard board = new TaskBasedBoard(new MassiveBoardConfiguration());
 
         ViewModel viewModel = new ViewModel();
         View view = new View(viewModel, 1200, 800);
@@ -35,7 +41,7 @@ public class TestMultithreading {
             if (pb.getVelocity().getAbsolute() < 0.05 && System.currentTimeMillis() - lastKickTime > 2000) {
                 var angle = rand.nextDouble() * Math.PI * 0.25;
                 var v = new Vector2D(Math.cos(angle), Math.sin(angle));
-                v.mul(5.0);
+                v.mul(2.0);
                 pb.setVelocity(v.getX(), v.getY());
                 lastKickTime = System.currentTimeMillis();
             }
@@ -55,5 +61,5 @@ public class TestMultithreading {
             view.render();
         }
     }
-
+    
 }
