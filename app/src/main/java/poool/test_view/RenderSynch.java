@@ -1,4 +1,4 @@
-package poool.view;
+package poool.test_view;
 
 public class RenderSynch {
 

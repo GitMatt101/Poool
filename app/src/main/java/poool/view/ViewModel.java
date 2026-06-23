@@ -2,29 +2,31 @@ package poool.view;
 
 import java.util.ArrayList;
 
+import poool.model.Ball;
 import poool.model.Point2D;
-import poool.model.board.Board;
+import poool.model.board.GameBoard;
 
-record BallViewInfo(Point2D pos, double radius) {
-}
+record BallViewInfo(Point2D pos, double radius) {}
 
 public class ViewModel {
 
 	private ArrayList<BallViewInfo> balls;
 	private BallViewInfo player;
-	private int framePerSec;
+	private BallViewInfo bot;
 
 	public ViewModel() {
 		balls = new ArrayList<BallViewInfo>();
-		framePerSec = 0;
 	}
 
-	public synchronized void update(Board board, int framePerSec) {
+	public synchronized void update(GameBoard board) {
 		balls.clear();
-		for (var b : board.getAllBalls()) {
+		for (var b : board.getBoard().getSmallBalls()) {
 			balls.add(new BallViewInfo(b.getPosition(), b.getRadius()));
 		}
-		this.framePerSec = framePerSec;
+		final Ball player = board.getBoard().getPlayer();
+		final Ball bot = board.getBoard().getOpponent();
+		this.player = new BallViewInfo(player.getPosition(), player.getRadius());
+		this.bot = new BallViewInfo(bot.getPosition(), bot.getRadius());
 	}
 
 	public synchronized ArrayList<BallViewInfo> getBalls() {
@@ -34,12 +36,12 @@ public class ViewModel {
 
 	}
 
-	public synchronized int getFramePerSec() {
-		return framePerSec;
-	}
-
 	public synchronized BallViewInfo getPlayerBall() {
 		return player;
+	}
+
+	public synchronized BallViewInfo getBotBall() {
+		return bot;
 	}
 
 }

@@ -9,8 +9,8 @@ import poool.model.board.MassiveBoardConfiguration;
 import poool.model.multithreading.MultithreadedBoard;
 import poool.model.sequential.SequentialBoard;
 import poool.model.task.TaskBasedBoard;
-import poool.view.View;
-import poool.view.ViewModel;
+import poool.test_view.View;
+import poool.test_view.ViewModel;
 
 public class Test {
 

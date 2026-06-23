@@ -1,25 +1,29 @@
 package poool.view;
 
+import javax.swing.JFrame;
+import javax.swing.JPanel;
+
+import poool.controller.ActiveController;
+import poool.utils.Globals;
+
 import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
-import javax.swing.*;
+import java.awt.event.*;
 
-public class ViewFrame extends JFrame {
+public class ViewFrame extends JFrame implements KeyListener {
 
-	private VisualiserPanel panel;
-	private ViewModel model;
-	private RenderSynch sync;
+	private final VisualiserPanel panel;
+	private final ViewModel model;
+    private final ActiveController controller;
 
-	public ViewFrame(ViewModel model, int w, int h) {
+    public ViewFrame(final ViewModel model, final ActiveController controller, final int w, final int h) {
 		this.model = model;
-		this.sync = new RenderSynch();
-		setTitle("Sketch 01");
-		setSize(w, h + 25);
+        this.controller = controller;
+		setTitle("Poool");
+		setSize(w, h);
 		setResizable(false);
 		panel = new VisualiserPanel(w, h);
 		getContentPane().add(panel);
@@ -32,25 +36,57 @@ public class ViewFrame extends JFrame {
 				System.exit(-1);
 			}
 		});
+		this.addKeyListener(this);
 	}
 
 	public void render() {
-		long nf = sync.nextFrameToRender();
 		panel.repaint();
-		try {
-			sync.waitForFrameRendered(nf);
-		} catch (InterruptedException ex) {
-			ex.printStackTrace();
-		}
 	}
 
-	public class VisualiserPanel extends JPanel {
+    @Override
+    public void keyPressed(KeyEvent key) {
+        switch (key.getExtendedKeyCode()) {
+            case KeyEvent.VK_W:
+                this.controller.notifyNewMove(player -> player.getVelocity().setY(Globals.PLAYER_SPPED));
+                break;
+            case KeyEvent.VK_A:
+                this.controller.notifyNewMove(player -> player.getVelocity().setX(-Globals.PLAYER_SPPED));
+                break;
+            case KeyEvent.VK_S:
+                this.controller.notifyNewMove(player -> player.getVelocity().setY(-Globals.PLAYER_SPPED));
+                break;
+            case KeyEvent.VK_D:
+                this.controller.notifyNewMove(player -> player.getVelocity().setX(Globals.PLAYER_SPPED));
+                break;
+            default:
+                break;
+        }
+    }
+
+    @Override
+    public void keyReleased(KeyEvent key) {
+        switch (key.getExtendedKeyCode()) {
+            case KeyEvent.VK_W: case KeyEvent.VK_S:
+                this.controller.notifyNewMove(player -> player.getVelocity().setY(0));
+                break;
+            case KeyEvent.VK_A: case KeyEvent.VK_D:
+                this.controller.notifyNewMove(player -> player.getVelocity().setX(0));
+                break;
+            default:
+                break;
+        }
+    }
+
+    @Override
+    public void keyTyped(KeyEvent key) {}
+
+    public class VisualiserPanel extends JPanel {
 		private int ox;
 		private int oy;
 		private int delta;
 
 		public VisualiserPanel(int w, int h) {
-			setSize(w, h + 25);
+			setSize(w, h);
 			ox = w / 2;
 			oy = h / 2;
 			delta = Math.min(ox, oy);
@@ -59,10 +95,8 @@ public class ViewFrame extends JFrame {
 		public void paint(Graphics g) {
 			Graphics2D g2 = (Graphics2D) g;
 
-			g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
-					RenderingHints.VALUE_ANTIALIAS_ON);
-			g2.setRenderingHint(RenderingHints.KEY_RENDERING,
-					RenderingHints.VALUE_RENDER_QUALITY);
+			g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+			g2.setRenderingHint(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY);
 			g2.clearRect(0, 0, this.getWidth(), this.getHeight());
 
 			g2.setColor(Color.LIGHT_GRAY);
@@ -82,6 +116,7 @@ public class ViewFrame extends JFrame {
 			}
 
 			g2.setStroke(new BasicStroke(3));
+			g2.setColor(Color.BLUE);
 			var pb = model.getPlayerBall();
 			if (pb != null) {
 				var p1 = pb.pos();
@@ -92,13 +127,24 @@ public class ViewFrame extends JFrame {
 				g2.drawOval(x0 - radiusX, y0 - radiusY, radiusX * 2, radiusY * 2);
 			}
 
-			g2.setStroke(new BasicStroke(1));
-			g2.drawString("Num small balls: " + model.getBalls().size(), 20, 40);
-			g2.drawString("Frame per sec: " + model.getFramePerSec(), 20, 60);
+			g2.setStroke(new BasicStroke(3));
+			var bot = model.getBotBall();
+			g2.setColor(Color.RED);
+			if (bot != null) {
+				var p1 = bot.pos();
+				int x0 = (int) (ox + p1.getX() * delta);
+				int y0 = (int) (oy - p1.getY() * delta);
+				int radiusX = (int) (bot.radius() * delta);
+				int radiusY = (int) (bot.radius() * delta);
+				g2.drawOval(x0 - radiusX, y0 - radiusY, radiusX * 2, radiusY * 2);
+			}
 
-			sync.notifyFrameRendered();
-
+			g2.setColor(Color.BLACK);
+			int holeRadius = (int) (Globals.HOLE_RADIUS * delta);
+			g2.fillOval(0 - holeRadius, 0 - holeRadius, holeRadius * 2, holeRadius * 2);
+			g2.fillOval(ox * 2 - holeRadius, 0 - holeRadius, holeRadius * 2, holeRadius * 2);
 		}
 
 	}
+    
 }

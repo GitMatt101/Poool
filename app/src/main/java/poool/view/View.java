@@ -1,12 +1,14 @@
 package poool.view;
 
+import poool.controller.ActiveController;
+
 public class View {
 
-	private ViewFrame frame;
+    private ViewFrame frame;
 	private ViewModel viewModel;
 	
-	public View(ViewModel model, int w, int h) {
-		frame = new ViewFrame(model, w, h);	
+	public View(ViewModel model, ActiveController controller, int w, int h) {
+		frame = new ViewFrame(model, controller, w, h);	
 		frame.setVisible(true);
 		this.viewModel = model;
 	}
@@ -18,4 +20,5 @@ public class View {
 	public ViewModel getViewModel() {
 		return viewModel;
 	}
+    
 }

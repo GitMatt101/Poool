@@ -16,6 +16,10 @@ public class Globals {
 
     public static int GRID_COLS = extractGridComponent((rows, cols) -> cols);
 
+    public static double HOLE_RADIUS = 0.2;
+
+    public static double PLAYER_SPPED = 0.8;
+
     private Globals() {}
 
     private static int extractGridComponent(final BiFunction<Integer, Integer, Integer> extractor) {

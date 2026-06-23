@@ -1,5 +1,7 @@
 package poool.model;
 
+import java.util.Optional;
+
 import poool.utils.Globals;
 
 public class Ball {
@@ -8,6 +10,7 @@ public class Ball {
     private final Vector2D velocity;
     private final double radius;
     private final double mass;
+    private Ball lastHit = null;
 
     public Ball(final Point2D position, final double radius, final double mass) {
         this.position = position;
@@ -70,6 +73,14 @@ public class Ball {
             this.velocity.invertY();
         else if (this.position.getY() - radius <= bounds.y0() && this.velocity.getY() < 0)
             this.velocity.invertY();
+    }
+
+    public void hit(final Ball ball) {
+        this.lastHit = ball;
+    }
+
+    public Optional<Ball> getLastHit() {
+        return Optional.ofNullable(this.lastHit);
     }
     
 }

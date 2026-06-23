@@ -32,7 +32,7 @@ public class GameBoardConfiguration implements BoardConfiguration {
             for (int j = 0; j < COLS; j++) {
                 double px = -totalLength / 2 + j * RADIUS * 2;
                 double py = -totalHeight / 2 + i * RADIUS * 2;
-                balls.add(new Ball(new Point2D(px, py), RADIUS, 0.1));
+                balls.add(new Ball(new Point2D(px, py), RADIUS, 0.25));
             }
         }
         return balls;

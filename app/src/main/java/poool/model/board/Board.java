@@ -13,8 +13,12 @@ public interface Board {
 
     List<Ball> getAllBalls();
 
+    List<Ball> getSmallBalls();
+
     Boundary getBounds();
 
     void updateState(double deltaTime);
+
+    void removeBall(Ball ball);
     
 }

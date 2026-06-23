@@ -1,5 +1,6 @@
 package poool.model.board;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import poool.model.Ball;
@@ -37,8 +38,21 @@ public abstract class BasicBoard implements Board {
     }
 
     @Override
+    public List<Ball> getSmallBalls() {
+        final List<Ball> smallBalls = new ArrayList<>(this.balls);
+        smallBalls.remove(this.player);
+        smallBalls.remove(this.opponent);
+        return smallBalls;
+    }
+
+    @Override
     public Boundary getBounds() {
         return this.bounds;
+    }
+
+    @Override
+    public void removeBall(final Ball ball) {
+        this.balls.remove(ball);
     }
     
 }
