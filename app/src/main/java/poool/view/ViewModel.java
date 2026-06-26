@@ -1,6 +1,7 @@
 package poool.view;
 
 import java.util.ArrayList;
+import java.util.Optional;
 
 import poool.model.Ball;
 import poool.model.Point2D;
@@ -13,12 +14,15 @@ public class ViewModel {
 	private ArrayList<BallViewInfo> balls;
 	private BallViewInfo player;
 	private BallViewInfo bot;
+	private int playerScore;
+	private int botScore;
+	private Optional<Boolean> over;
 
 	public ViewModel() {
 		balls = new ArrayList<BallViewInfo>();
 	}
 
-	public synchronized void update(GameBoard board) {
+	public synchronized void update(final GameBoard board, final int playerScore, final int botScore, Optional<Boolean> over) {
 		balls.clear();
 		for (var b : board.getBoard().getSmallBalls()) {
 			balls.add(new BallViewInfo(b.getPosition(), b.getRadius()));
@@ -27,6 +31,9 @@ public class ViewModel {
 		final Ball bot = board.getBoard().getOpponent();
 		this.player = new BallViewInfo(player.getPosition(), player.getRadius());
 		this.bot = new BallViewInfo(bot.getPosition(), bot.getRadius());
+		this.playerScore = playerScore;
+		this.botScore = botScore;
+		this.over = over;
 	}
 
 	public synchronized ArrayList<BallViewInfo> getBalls() {
@@ -37,11 +44,23 @@ public class ViewModel {
 	}
 
 	public synchronized BallViewInfo getPlayerBall() {
-		return player;
+		return this.player;
 	}
 
 	public synchronized BallViewInfo getBotBall() {
-		return bot;
+		return this.bot;
+	}
+
+	public synchronized int getPlayerScore() {
+		return this.playerScore;
+	}
+
+	public synchronized int getBotScore() {
+		return this.botScore;
+	}
+
+	public synchronized Optional<Boolean> isOver() {
+		return this.over;
 	}
 
 }

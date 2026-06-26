@@ -1,5 +1,7 @@
 package poool.model.game_logics;
 
+import java.util.Optional;
+
 import poool.model.board.GameBoard;
 import poool.view.ViewModel;
 import poool.view.View;
@@ -31,7 +33,7 @@ public class GameLoop extends Thread {
             final long elapsed = System.currentTimeMillis() - lastUpdateTime;
             lastUpdateTime = System.currentTimeMillis();
             this.board.updateState(elapsed);
-            this.viewModel.update(this.board);
+            this.viewModel.update(this.board, this.playerScore, this.botScore, over ? Optional.of(this.playerWin) : Optional.empty());
             this.view.render();
             this.botUpdater.botUpdated();
         }

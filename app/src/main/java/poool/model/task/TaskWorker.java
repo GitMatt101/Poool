@@ -46,6 +46,8 @@ public class TaskWorker implements Callable<Void> {
 
             // if not already separating, update velocities
             if (dvn <= 0) {
+                a.hit(b);
+                b.hit(a);
                 final double imp = -(1 + Globals.RESTITUTION_COEFFICIENT) * dvn / (1.0 / a.getMass() + 1.0 / b.getMass());
                 a.setVelocity(a.getVelocity().getX() - (imp / a.getMass()) * nx, a.getVelocity().getY() - (imp / a.getMass()) * ny);
                 b.setVelocity(b.getVelocity().getX() + (imp / b.getMass()) * nx, b.getVelocity().getY() + (imp / b.getMass()) * ny);

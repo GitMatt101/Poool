@@ -1,5 +1,7 @@
 package poool;
 
+import java.util.Optional;
+
 import poool.controller.ActiveController;
 import poool.model.board.GameBoard;
 import poool.model.board.GameBoardConfiguration;
@@ -16,7 +18,7 @@ public class Game {
         ActiveController controller = new ActiveController(board.getBoard().getPlayer());
         View view = new View(viewModel, controller, 1200, 800);
 
-        viewModel.update(board);
+        viewModel.update(board, 0, 0, Optional.empty());
 
         GameLoop loop = new GameLoop(board, viewModel, view);
 

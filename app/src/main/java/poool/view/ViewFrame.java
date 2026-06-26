@@ -8,6 +8,7 @@ import poool.utils.Globals;
 
 import java.awt.BasicStroke;
 import java.awt.Color;
+import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
@@ -143,6 +144,20 @@ public class ViewFrame extends JFrame implements KeyListener {
 			int holeRadius = (int) (Globals.HOLE_RADIUS * delta);
 			g2.fillOval(0 - holeRadius, 0 - holeRadius, holeRadius * 2, holeRadius * 2);
 			g2.fillOval(ox * 2 - holeRadius, 0 - holeRadius, holeRadius * 2, holeRadius * 2);
+
+			g2.setFont(new Font("Arial", Font.BOLD, 50));
+
+			g2.setColor(Color.BLUE);
+			g2.drawString(Integer.toString(model.getPlayerScore()), (float) (ox * 1.5), (float) (oy * 1.75));
+
+			g2.setColor(Color.RED); 
+			g2.drawString(Integer.toString(model.getBotScore()), (float) (ox / 2), (float) (oy * 1.75));
+
+			if (model.isOver().isPresent()) {
+				g2.setFont(new Font("Arial", Font.BOLD, 70));
+				g2.setColor(Color.BLACK);
+				g2.drawString((model.isOver().get() ? "Player" : "Bot") + " wins!", ox - 150, oy + 25);
+			}
 		}
 
 	}

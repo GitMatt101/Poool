@@ -9,8 +9,8 @@ import poool.model.Point2D;
 
 public class GameBoardConfiguration implements BoardConfiguration {
 
-    private static final int ROWS = 20;
-    private static final int COLS = 50;
+    private static final int ROWS = 10;
+    private static final int COLS = 20;
     private static final double RADIUS = 0.01;
 
     @Override
