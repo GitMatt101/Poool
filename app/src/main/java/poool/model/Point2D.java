@@ -39,10 +39,10 @@ public class Point2D {
         if (obj == this) {
             return true;
         }
-        if (!(obj instanceof Point2D pos)) {
+        if (!(obj instanceof Point2D)) {
             return false;
         }
-        return this.x == pos.getX() && this.y == pos.getY();
+        return this.x == ((Point2D) obj).getX() && this.y == ((Point2D) obj).getY();
     }
 
     @Override

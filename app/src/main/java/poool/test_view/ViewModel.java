@@ -2,11 +2,8 @@ package poool.test_view;
 
 import java.util.ArrayList;
 
-import poool.model.Point2D;
+import poool.model.BallViewInfo;
 import poool.model.board.Board;
-
-record BallViewInfo(Point2D pos, double radius) {
-}
 
 public class ViewModel {
 

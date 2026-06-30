@@ -4,10 +4,8 @@ import java.util.ArrayList;
 import java.util.Optional;
 
 import poool.model.Ball;
-import poool.model.Point2D;
+import poool.model.BallViewInfo;
 import poool.model.board.GameBoard;
-
-record BallViewInfo(Point2D pos, double radius) {}
 
 public class ViewModel {
 

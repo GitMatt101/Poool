@@ -1,0 +1,7 @@
+target = poool.jpf.TestMultithreadJpf
+
+classpath=/Poool/app/build/classes/java/main
+
+listener=gov.nasa.jpf.listener.PreciseRaceDetector
+
+report.console.property_violation=error,trace

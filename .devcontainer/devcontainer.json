@@ -1,0 +1,16 @@
+{
+    "name": "JPF Environment - Poool Test",
+    "build": {
+        "dockerfile": "Dockerfile"
+    },
+    "customizations": {
+        "vscode": {
+            "extensions": [
+                "vscjava.vscode-java-pack"
+            ]
+        }
+    },
+    "remoteUser": "vscode",
+    "workspaceFolder": "/Poool",
+    "workspaceMount": "source=${localWorkspaceFolder},target=/Poool,type=bind"
+}

@@ -34,7 +34,7 @@ public class Ball {
         return this.velocity;
     }
     
-    public void setVelocity(final double x, final double y) {
+    public synchronized void setVelocity(final double x, final double y) {
         this.velocity.setX(x);
         this.velocity.setY(y);
     }

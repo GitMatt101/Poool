@@ -55,10 +55,10 @@ public class Vector2D {
         if (obj == this) {
             return true;
         }
-        if (!(obj instanceof Vector2D pos)) {
+        if (!(obj instanceof Vector2D)) {
             return false;
         }
-        return this.x == pos.getX() && this.y == pos.getY();
+        return this.x == ((Vector2D) obj).getX() && this.y == ((Vector2D) obj).getY();
     }
 
     @Override
