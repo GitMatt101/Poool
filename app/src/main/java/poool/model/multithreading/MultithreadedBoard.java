@@ -15,9 +15,10 @@ public class MultithreadedBoard extends BasicBoard {
 
     public MultithreadedBoard(final BoardConfiguration configuration) {
         super(configuration);
+        this.init();
     }
 
-    public void init() {
+    private void init() {
         for (int i = 0; i < Globals.MAX_THREADS; i++)
             this.workers.add(new Worker(this));
         this.workers.forEach(Worker::start);
