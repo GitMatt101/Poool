@@ -63,5 +63,9 @@ public class TaskBasedBoard extends BasicBoard {
             this.executor.invokeAll(tasks);
         } catch (InterruptedException e) {}
     }
+
+    public void stop() {
+        this.executor.shutdownNow();
+    }
     
 }

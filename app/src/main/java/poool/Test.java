@@ -20,7 +20,7 @@ public class Test {
 
         // SequentialBoard board = new SequentialBoard(new MassiveBoardConfiguration());
         // MultithreadedBoard board = new MultithreadedBoard(new MassiveBoardConfiguration());
-        Board board = new TaskBasedBoard(new MassiveBoardConfiguration());
+        Board board = new MultithreadedBoard(new MassiveBoardConfiguration());
 
         ViewModel viewModel = new ViewModel();
         View view = new View(viewModel, 1200, 800);

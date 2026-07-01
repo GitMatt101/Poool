@@ -22,7 +22,7 @@ public class MultithreadedBoard extends BasicBoard {
         for (int i = 0; i < Globals.MAX_THREADS; i++)
             this.workers.add(new Worker(this));
         this.workers.forEach(Worker::start);
-        this.finishedJobs = this.workers.size();
+        this.finishedJobs = 0;
     }
 
     @Override
@@ -30,8 +30,7 @@ public class MultithreadedBoard extends BasicBoard {
         while (this.finishedJobs < this.workers.size()) {
             try {
                 wait();
-            } catch (InterruptedException e) {
-            }
+            } catch (InterruptedException e) {}
         }
         return this.balls;
     }
@@ -45,12 +44,12 @@ public class MultithreadedBoard extends BasicBoard {
     @Override
     public synchronized void updateState(final double deltaTime) {
         this.updatePositions(deltaTime);
+        this.finishedJobs = 0;
         this.checkCollisions();
         while (finishedJobs < this.workers.size()) {
             try {
                 wait();
-            } catch (InterruptedException e) {
-            }
+            } catch (InterruptedException e) {}
         }
         this.finishedJobs = 0;
     }
@@ -88,6 +87,10 @@ public class MultithreadedBoard extends BasicBoard {
             worker.setBalls(workersBalls.get(i));
             worker.startWorking();
         }
+    }
+
+    public void stop() {
+        this.workers.forEach(Worker::interrupt);
     }
 
 }

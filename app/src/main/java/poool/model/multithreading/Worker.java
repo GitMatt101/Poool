@@ -28,27 +28,34 @@ public class Worker extends Thread {
 
     @Override
     public void run() {
-        while (true) {
-            synchronized (this) {
-                while (!this.work) {
-                    try {
+        while (!Thread.currentThread().isInterrupted()) {
+            try {
+                synchronized (this) {
+                    while (!this.work) {
                         wait();
-                    } catch (InterruptedException e) {}
+                    }
                 }
-            }
-            if (this.balls.stream().anyMatch(b -> b.getVelocity().getAbsolute() > Globals.MIN_VELOCITY)) {
-                for (int i = 0; i < this.balls.size() - 1; i++) {
-                    for (int j = i + 1; j < this.balls.size(); j++) {
-                        final Ball a = this.balls.get(i);
-                        final Ball b = this.balls.get(j);
-                        if (a.getVelocity().getAbsolute() > Globals.MIN_VELOCITY || b.getVelocity().getAbsolute() > Globals.MIN_VELOCITY) {
-                            Ball.checkCollision(this.balls.get(i), this.balls.get(j));
+
+                if (this.balls.stream().anyMatch(b -> b.getVelocity().getAbsolute() > Globals.MIN_VELOCITY)) {
+                    for (int i = 0; i < this.balls.size() - 1; i++) {
+                        for (int j = i + 1; j < this.balls.size(); j++) {
+                            final Ball a = this.balls.get(i);
+                            final Ball b = this.balls.get(j);
+                            synchronized (a) {
+                                synchronized (b) {
+                                    if (a.getVelocity().getAbsolute() > Globals.MIN_VELOCITY || b.getVelocity().getAbsolute() > Globals.MIN_VELOCITY) {
+                                        Ball.checkCollision(a, b);
+                                    }
+                                }
+                            }
                         }
                     }
                 }
+                this.work = false;
+                this.monitor.signalJobDone();
+            } catch (InterruptedException e) {
+                break;
             }
-            this.work = false;
-            this.monitor.signalJobDone();
         }
     }
 

@@ -30,7 +30,7 @@ public class Ball {
         return this.position;
     }
     
-    public void setPosition(final double x, final double y) {
+    public synchronized void setPosition(final double x, final double y) {
         this.position.sum(new Vector2D(-this.position.getX(), -this.position.getY()));
         this.position.sum(new Vector2D(x, y));
     }
@@ -39,7 +39,7 @@ public class Ball {
         return this.velocity;
     }
     
-    public void setVelocity(final double x, final double y) {
+    public synchronized void setVelocity(final double x, final double y) {
         this.velocity.setX(x);
         this.velocity.setY(y);
     }

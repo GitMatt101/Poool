@@ -16,7 +16,7 @@ public class TestMultithreadJpf {
 
         @Override
         public Ball getPlayerBall() {
-            return new Ball(new Point2D(0, -0.5), new Vector2D(0, 1), 0.05, 1.5);
+            return new Ball(new Point2D(0, -0.07), new Vector2D(0, 1), 0.05, 1.5);
         }
 
         @Override
@@ -41,9 +41,10 @@ public class TestMultithreadJpf {
 
     public static void main(String[] args) throws InterruptedException {
         final MultithreadedBoard board = new MultithreadedBoard(configuration);
-        while (board.getPlayer().getVelocity().getAbsolute() > 0) {
-            board.updateState(1);
+        for (int i = 0; i < 2; i++) {
+            board.updateState(10);
         }
+        board.stop();
     }
 
 }
