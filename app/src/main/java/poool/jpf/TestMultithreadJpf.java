@@ -43,6 +43,7 @@ public class TestMultithreadJpf {
         final MultithreadedBoard board = new MultithreadedBoard(configuration);
         for (int i = 0; i < 2; i++) {
             board.updateState(10);
+            board.getAllBalls();
         }
         board.stop();
     }
